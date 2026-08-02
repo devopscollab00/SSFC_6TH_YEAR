@@ -2,12 +2,38 @@
 class ChurchAnniversaryApp {
   constructor() {
     this.init();
+    this.setupNavbarScroll();
   }
   
   init() {
     this.loadGallery();
     this.setupMobileMenu();
     this.preloadImages();
+  }
+
+  setupNavbarScroll() {
+    const navbar = document.querySelector('.navbar');
+    const hero = document.getElementById('hero');
+    let lastScrollTop = 0;
+    const scrollThreshold = 100; // Show navbar after scrolling down
+    
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const heroHeight = hero ? hero.offsetHeight : window.innerHeight;
+      
+      // Hide navbar on hero section (top of page)
+      if (scrollTop < heroHeight - scrollThreshold) {
+        navbar.classList.remove('navbar-visible');
+        navbar.classList.add('navbar-hidden');
+      } 
+      // Show navbar when scrolled down
+      else {
+        navbar.classList.remove('navbar-hidden');
+        navbar.classList.add('navbar-visible');
+      }
+      
+      lastScrollTop = scrollTop;
+    }, false);
   }
   
   loadGallery() {

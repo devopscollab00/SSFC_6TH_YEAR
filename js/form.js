@@ -147,7 +147,8 @@ class RSVPForm {
       
       console.log("API Response:", response);
       
-      if (response.success !== false && (response.success || response.status === "success")) {
+      // With no-cors mode, we consider any non-network error as success
+      if (response.success !== false) {
         this.showSuccessModal();
         this.form.reset();
         this.togglePeopleField();
@@ -159,6 +160,8 @@ class RSVPForm {
           }
           this.updateStatistics();
         }, 500);
+        
+        util.showToast("✓ RSVP submitted successfully! Thank you for confirming.", "success");
       } else {
         const errorMsg = response.message || "Submission failed. Please try again.";
         throw new Error(errorMsg);
