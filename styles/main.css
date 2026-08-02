@@ -992,13 +992,12 @@ section {
   justify-content: center;
   color: white;
   flex-shrink: 0;
-  animation: drift 4s ease-in-out infinite;
+  transition: transform 0.3s ease;
 }
 
-.detail-card:nth-child(1) .detail-icon { animation-delay: 0s; }
-.detail-card:nth-child(2) .detail-icon { animation-delay: 0.5s; }
-.detail-card:nth-child(3) .detail-icon { animation-delay: 1s; }
-.detail-card:nth-child(4) .detail-icon { animation-delay: 1.5s; }
+.detail-card:hover .detail-icon {
+  transform: scale(1.1);
+}
 
 .detail-label {
   font-family: var(--font-heading-modern);
