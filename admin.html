@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Admin Dashboard - Church Anniversary</title>
+    <link rel="stylesheet" href="styles/admin.css">
+</head>
+<body>
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal modal-login">
+        <div class="modal-content login-form">
+            <h1>Admin Dashboard</h1>
+            <p>Enter password to access</p>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        class="form-input" 
+                        placeholder="Enter password"
+                        required
+                    >
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg">
+                    Login
+                </button>
+                <p class="error-message" id="loginError"></p>
+            </form>
+            
+            <a href="/" class="login-back">← Back to Home</a>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard" style="display: none;">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <h1>Admin Dashboard</h1>
+                <button class="btn btn-outline" onclick="logout()">Logout</button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <div class="container">
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">People Confirmed</div>
+                        <div class="stat-value" id="dashPeopleConfirmed">0</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-label">Total Confirmations</div>
+                        <div class="stat-value" id="dashConfirmations">0</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-label">Participating Churches</div>
+                        <div class="stat-value" id="dashChurches">0</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-label">Unable to Attend</div>
+                        <div class="stat-value" id="dashUnableToAttend">0</div>
+                    </div>
+                </div>
+
+                <!-- Section: Recent Confirmations -->
+                <section class="dashboard-section">
+                    <div class="section-header">
+                        <h2>Latest Confirmations</h2>
+                        <button class="btn btn-sm btn-outline" onclick="exportToCSV()">
+                            📥 Export CSV
+                        </button>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>RSVP ID</th>
+                                    <th>Name</th>
+                                    <th>Church</th>
+                                    <th>Attendance</th>
+                                    <th>People</th>
+                                    <th>Date</th>
+                                    <th>Message</th>
+                                </tr>
+                            </thead>
+                            <tbody id="confirmsTable">
+                                <tr>
+                                    <td colspan="7" class="text-center">Loading...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Section: Search -->
+                <section class="dashboard-section">
+                    <h2>Search RSVP</h2>
+                    <div class="search-form">
+                        <input 
+                            type="text" 
+                            id="searchInput" 
+                            class="form-input" 
+                            placeholder="Search by RSVP ID, Name, or Church..."
+                        >
+                        <button type="button" class="btn btn-primary" onclick="searchRSVP()">
+                            Search
+                        </button>
+                    </div>
+                    <div id="searchResults" class="search-results"></div>
+                </section>
+
+                <!-- Section: Filters -->
+                <section class="dashboard-section">
+                    <h2>Filter Confirmations</h2>
+                    <div class="filter-group">
+                        <label>
+                            <input type="radio" name="filter" value="all" checked onchange="applyFilter()">
+                            All Responses
+                        </label>
+                        <label>
+                            <input type="radio" name="filter" value="yes" onchange="applyFilter()">
+                            Attending
+                        </label>
+                        <label>
+                            <input type="radio" name="filter" value="no" onchange="applyFilter()">
+                            Not Attending
+                        </label>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
