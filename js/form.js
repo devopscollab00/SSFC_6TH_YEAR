@@ -101,17 +101,20 @@ class RSVPForm {
     try {
       // Collect form data
       const formData = {
+        action: "POST_RSVP",
         name: document.getElementById("name").value,
         church: document.getElementById("church").value,
         attendance: document.querySelector('input[name="attendance"]:checked').value,
         numberOfPeople: document.getElementById("numberOfPeople").value || 1,
         message: document.getElementById("message").value,
-        rsvpId: util.generateID(),
-        timestamp: new Date().toISOString(),
       };
       
+      console.log("Submitting form data:", formData);
+      
       // Submit to Google Apps Script
-      const response = await this.submitToGoogleScript(formData);
+      const response = await util.fetchAPI("POST_RSVP", "POST", formData);
+      
+      console.log("API Response:", response);
       
       if (response.success || response.status === "success") {
         this.showSuccessModal();
@@ -136,10 +139,6 @@ class RSVPForm {
       btnText.style.display = "inline";
       btnLoader.style.display = "none";
     }
-  }
-  
-  async submitToGoogleScript(data) {
-    return await util.fetchAPI("POST_RSVP", "POST", data);
   }
   
   showSuccessModal() {

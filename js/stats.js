@@ -17,7 +17,7 @@ class StatisticsManager {
   
   async fetchStats() {
     try {
-      const response = await util.fetchAPI("GET_STATS");
+      const response = await util.fetchAPI("GET_STATS", "POST", { action: "GET_STATS" });
       
       if (response.success || response.status === "success") {
         this.stats = {

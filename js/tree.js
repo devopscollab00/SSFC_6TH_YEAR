@@ -19,7 +19,7 @@ class TreeAnimation {
   
   async updateFromAPI() {
     try {
-      const response = await util.fetchAPI("GET_STATS");
+      const response = await util.fetchAPI("GET_STATS", "POST", { action: "GET_STATS" });
       this.confirmations = response.peopleConfirmed || 0;
       this.updateTreeStage();
       this.drawTree();

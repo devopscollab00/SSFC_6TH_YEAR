@@ -15,7 +15,7 @@ const CONFIG = {
   contactEmail: "info@church.com",
   
   // Google Apps Script
-  googleScriptURL: "https://script.google.com/macros/d/YOUR_DEPLOYMENT_ID/usercalc", // Update after deployment
+  googleScriptURL: "https://script.google.com/macros/s/AKfycbwj2CFKBweVffV2O4UaDeBF5e9OBVkgfPDq53ORb4EWBpA6-rFYjMJXyEvc5Nzfx0Bt/exec",
   
   // Social Links (Optional)
   socialLinks: {
@@ -86,21 +86,25 @@ const util = {
    */
   async fetchAPI(endpoint, method = "GET", data = null) {
     try {
+      const payload = {
+        ...data,
+        action: endpoint
+      };
+      
       const options = {
-        method,
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify(payload),
       };
-      
-      if (method !== "GET" && data) {
-        options.body = JSON.stringify(data);
-      }
       
       const response = await fetch(CONFIG.googleScriptURL, options);
       if (!response.ok) throw new Error(`API error: ${response.status}`);
       
-      return await response.json();
+      const result = await response.json();
+      Logger.log("API Response:", result);
+      return result;
     } catch (error) {
       console.error("API Error:", error);
       throw error;
