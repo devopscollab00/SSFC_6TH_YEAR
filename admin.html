@@ -118,23 +118,115 @@
                     <div id="searchResults" class="search-results"></div>
                 </section>
 
-                <!-- Section: Filters -->
+    <!-- Section: Event Settings -->
                 <section class="dashboard-section">
-                    <h2>Filter Confirmations</h2>
-                    <div class="filter-group">
-                        <label>
-                            <input type="radio" name="filter" value="all" checked onchange="applyFilter()">
-                            All Responses
-                        </label>
-                        <label>
-                            <input type="radio" name="filter" value="yes" onchange="applyFilter()">
-                            Attending
-                        </label>
-                        <label>
-                            <input type="radio" name="filter" value="no" onchange="applyFilter()">
-                            Not Attending
-                        </label>
+                    <div class="section-header">
+                        <h2>Event Settings</h2>
                     </div>
+
+                    <form id="eventSettingsForm" class="event-settings-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="eventName" class="form-label">Event Name</label>
+                                <input 
+                                    type="text" 
+                                    id="eventName" 
+                                    class="form-input" 
+                                    placeholder="6th Church Anniversary"
+                                >
+                            </div>
+                            <div class="form-group">
+                                <label for="eventTheme" class="form-label">Theme</label>
+                                <input 
+                                    type="text" 
+                                    id="eventTheme" 
+                                    class="form-input" 
+                                    placeholder="Celebrating Faith & Fellowship"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bibleVerse" class="form-label">Bible Verse</label>
+                            <textarea 
+                                id="bibleVerse" 
+                                class="form-textarea" 
+                                rows="2"
+                                placeholder="Enter the theme bible verse..."
+                            ></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="eventDate" class="form-label">Event Date</label>
+                                <input 
+                                    type="date" 
+                                    id="eventDate" 
+                                    class="form-input"
+                                >
+                            </div>
+                            <div class="form-group">
+                                <label for="eventTime" class="form-label">Event Time</label>
+                                <input 
+                                    type="text" 
+                                    id="eventTime" 
+                                    class="form-input" 
+                                    placeholder="9:00 AM - 5:00 PM"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="eventVenue" class="form-label">Venue</label>
+                            <input 
+                                type="text" 
+                                id="eventVenue" 
+                                class="form-input" 
+                                placeholder="Church Main Sanctuary"
+                            >
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contactPerson" class="form-label">Contact Person</label>
+                                <input 
+                                    type="text" 
+                                    id="contactPerson" 
+                                    class="form-input" 
+                                    placeholder="Pastor Name"
+                                >
+                            </div>
+                            <div class="form-group">
+                                <label for="contactNumber" class="form-label">Contact Number</label>
+                                <input 
+                                    type="tel" 
+                                    id="contactNumber" 
+                                    class="form-input" 
+                                    placeholder="+1 (555) 123-4567"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mapsUrl" class="form-label">Google Maps URL (Optional)</label>
+                            <input 
+                                type="url" 
+                                id="mapsUrl" 
+                                class="form-input" 
+                                placeholder="https://maps.google.com/..."
+                            >
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">
+                                Save Settings
+                            </button>
+                            <button type="button" class="btn btn-outline" onclick="loadEventSettings()">
+                                Reset
+                            </button>
+                        </div>
+                        <p class="settings-message" id="settingsMessage"></p>
+                    </form>
                 </section>
             </div>
         </main>
