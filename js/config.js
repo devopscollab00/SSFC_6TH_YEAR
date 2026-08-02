@@ -60,7 +60,23 @@ const CONFIG = {
 };
 
 // Initialize Configuration
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", async function() {
+  // Try to fetch settings from Google Sheets
+  try {
+    const settings = await util.fetchAPI({ action: "GET_SETTINGS" });
+    if (settings.success && settings.data) {
+      // Update event details from spreadsheet
+      if (settings.data.eventDate) CONFIG.eventDate = settings.data.eventDate;
+      if (settings.data.eventTime) CONFIG.eventTime = settings.data.eventTime;
+      if (settings.data.venue) CONFIG.eventVenue = settings.data.venue;
+      if (settings.data.contactNumber) CONFIG.contactNumber = settings.data.contactNumber;
+      if (settings.data.bibleVerse) CONFIG.bibleVerse = settings.data.bibleVerse;
+      if (settings.data.eventName) CONFIG.eventName = settings.data.eventName;
+    }
+  } catch (error) {
+    console.log("Using default config values:", error);
+  }
+  
   // Update all text content
   document.getElementById("eventDate").textContent = CONFIG.eventDate;
   document.getElementById("eventTime").textContent = CONFIG.eventTime;
