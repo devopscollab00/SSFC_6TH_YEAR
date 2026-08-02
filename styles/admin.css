@@ -346,6 +346,78 @@ body {
   accent-color: var(--color-primary);
 }
 
+/* Event Settings Form */
+.event-settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.form-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--color-text);
+  font-size: 0.95rem;
+}
+
+.form-textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(212, 166, 82, 0.1);
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.form-actions .btn {
+  flex: 1;
+  min-width: 150px;
+}
+
+.settings-message {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  display: none;
+}
+
+.settings-message.success {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--color-success);
+  border-left: 4px solid var(--color-success);
+  display: block;
+}
+
+.settings-message.error {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--color-error);
+  border-left: 4px solid var(--color-error);
+  display: block;
+}
+
 /* Utility Classes */
 .text-success {
   color: var(--color-success);
@@ -416,5 +488,17 @@ body {
   .data-table th,
   .data-table td {
     padding: 0.75rem 0.5rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions .btn {
+    width: 100%;
   }
 }

@@ -83,13 +83,29 @@ document.addEventListener("DOMContentLoaded", function() {
 const util = {
   /**
    * Fetch data from Google Apps Script
+   * Accepts either a string endpoint or full object with action property
    */
-  async fetchAPI(endpoint, method = "GET", data = null) {
+  async fetchAPI(endpointOrData, method = "POST", data = null) {
     try {
-      const payload = {
-        ...data,
-        action: endpoint
-      };
+      let payload = {};
+      
+      // Handle different input formats
+      if (typeof endpointOrData === 'string') {
+        // Legacy format: fetchAPI("GET_STATS")
+        payload = {
+          action: endpointOrData,
+          ...data
+        };
+      } else if (typeof endpointOrData === 'object' && endpointOrData.action) {
+        // New format: fetchAPI({ action: "POST_RSVP", name: "..." })
+        payload = endpointOrData;
+      } else if (typeof endpointOrData === 'object') {
+        // Data object as first param
+        payload = {
+          action: method || "POST_RSVP",
+          ...endpointOrData
+        };
+      }
       
       const options = {
         method: "POST",
@@ -99,11 +115,18 @@ const util = {
         body: JSON.stringify(payload),
       };
       
+      console.log("API Request:", payload);
+      
       const response = await fetch(CONFIG.googleScriptURL, options);
-      if (!response.ok) throw new Error(`API error: ${response.status}`);
+      
+      if (!response.ok) {
+        console.error(`API HTTP error: ${response.status}`);
+        throw new Error(`API error: ${response.status}`);
+      }
       
       const result = await response.json();
-      Logger.log("API Response:", result);
+      console.log("API Response:", result);
+      
       return result;
     } catch (error) {
       console.error("API Error:", error);
@@ -153,6 +176,12 @@ const util = {
     toast.className = `toast toast-${type}`;
     toast.textContent = message;
     document.body.appendChild(toast);
+    
+    // Add animation
+    setTimeout(() => {
+      toast.style.animation = "fadeOut 0.3s ease-out forwards";
+    }, 2500);
+    
     setTimeout(() => toast.remove(), 3000);
   },
   
@@ -180,6 +209,16 @@ const util = {
       block: "start",
     });
   },
+  
+  /**
+   * Close modal (global)
+   */
+  closeModal() {
+    const modal = document.getElementById("successModal");
+    if (modal) {
+      modal.classList.remove("show");
+    }
+  }
 };
 
 // Export for use in other scripts

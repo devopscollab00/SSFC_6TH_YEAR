@@ -25,6 +25,63 @@ class AdminDashboard {
       this.isLoggedIn = true;
       this.showDashboard();
       this.loadDashboardData();
+      this.setupEventSettingsForm();
+    }
+  }
+
+  setupEventSettingsForm() {
+    const form = document.getElementById("eventSettingsForm");
+    if (form) {
+      form.addEventListener("submit", (e) => this.handleEventSettingsSubmit(e));
+      loadEventSettings();
+    }
+  }
+
+  async handleEventSettingsSubmit(e) {
+    e.preventDefault();
+
+    const settingsData = {
+      action: "UPDATE_SETTINGS",
+      eventName: document.getElementById("eventName").value,
+      theme: document.getElementById("eventTheme").value,
+      bibleVerse: document.getElementById("bibleVerse").value,
+      eventDate: document.getElementById("eventDate").value,
+      eventTime: document.getElementById("eventTime").value,
+      venue: document.getElementById("eventVenue").value,
+      mapsUrl: document.getElementById("mapsUrl").value,
+      contactPerson: document.getElementById("contactPerson").value,
+      contactNumber: document.getElementById("contactNumber").value,
+    };
+
+    try {
+      const response = await util.fetchAPI(settingsData);
+      const messageEl = document.getElementById("settingsMessage");
+
+      if (response.success || response.status === "success") {
+        messageEl.classList.remove("error");
+        messageEl.classList.add("success");
+        messageEl.textContent = "Settings saved successfully!";
+        
+        // Update CONFIG
+        CONFIG.eventName = settingsData.eventName;
+        CONFIG.eventDate = settingsData.eventDate;
+        CONFIG.eventTime = settingsData.eventTime;
+        CONFIG.eventVenue = settingsData.venue;
+        CONFIG.bibleVerse = settingsData.bibleVerse;
+        CONFIG.contactPerson = settingsData.contactPerson;
+        CONFIG.contactNumber = settingsData.contactNumber;
+        
+        setTimeout(() => {
+          messageEl.classList.remove("success");
+        }, 3000);
+      } else {
+        throw new Error(response.message || "Failed to save settings");
+      }
+    } catch (error) {
+      const messageEl = document.getElementById("settingsMessage");
+      messageEl.classList.remove("success");
+      messageEl.classList.add("error");
+      messageEl.textContent = "Error saving settings: " + error.message;
     }
   }
 
@@ -156,6 +213,19 @@ function logout() {
   location.reload();
 }
 
+function loadEventSettings() {
+  // Load event settings from CONFIG
+  document.getElementById("eventName").value = CONFIG.eventName || "";
+  document.getElementById("eventTheme").value = CONFIG.eventName?.split(" ")[0] || "";
+  document.getElementById("bibleVerse").value = CONFIG.bibleVerse || "";
+  document.getElementById("eventDate").value = CONFIG.eventDate || "";
+  document.getElementById("eventTime").value = CONFIG.eventTime || "";
+  document.getElementById("eventVenue").value = CONFIG.eventVenue || "";
+  document.getElementById("mapsUrl").value = "";
+  document.getElementById("contactPerson").value = CONFIG.contactPerson || "";
+  document.getElementById("contactNumber").value = CONFIG.contactNumber || "";
+}
+
 function searchRSVP() {
   const searchInput = document.getElementById("searchInput").value.toLowerCase();
   const resultsDiv = document.getElementById("searchResults");
@@ -257,6 +327,10 @@ function exportToCSV() {
   document.body.appendChild(element);
   element.click();
   document.body.removeChild(element);
+}
+
+function closeModal() {
+  util.closeModal();
 }
 
 // Initialize admin dashboard

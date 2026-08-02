@@ -34,6 +34,7 @@ class RSVPForm {
     } else {
       this.peopleGroup.style.display = "none";
       document.getElementById("numberOfPeople").required = false;
+      document.getElementById("numberOfPeople").value = "";
     }
   }
   
@@ -47,7 +48,7 @@ class RSVPForm {
       errorMessage = `${field.previousElementSibling?.textContent?.split("*")[0] || "This field"} is required`;
     } else if (field.name === "numberOfPeople") {
       const num = parseInt(field.value);
-      if (num < 1 || num > 50) {
+      if (field.required && (!field.value || num < 1 || num > 50)) {
         isValid = false;
         errorMessage = "Please enter a number between 1 and 50";
       }
@@ -73,8 +74,34 @@ class RSVPForm {
     return isValid;
   }
   
+  validateAttendanceRadio() {
+    const selectedAttendance = document.querySelector('input[name="attendance"]:checked');
+    const attendanceError = document.getElementById("attendanceError");
+    
+    if (!selectedAttendance) {
+      if (attendanceError) {
+        attendanceError.textContent = "Please select whether you'll attend";
+        attendanceError.classList.add("show");
+      }
+      return false;
+    } else {
+      if (attendanceError) {
+        attendanceError.classList.remove("show");
+      }
+      return true;
+    }
+  }
+  
   async handleSubmit(e) {
     e.preventDefault();
+    
+    console.log("Form submission started...");
+    
+    // Validate attendance selection first
+    if (!this.validateAttendanceRadio()) {
+      util.showToast("Please select whether you'll attend", "error");
+      return;
+    }
     
     // Validate all fields
     let isFormValid = true;
@@ -102,38 +129,43 @@ class RSVPForm {
       // Collect form data
       const formData = {
         action: "POST_RSVP",
-        name: document.getElementById("name").value,
-        church: document.getElementById("church").value,
+        name: document.getElementById("name").value.trim(),
+        church: document.getElementById("church").value.trim(),
         attendance: document.querySelector('input[name="attendance"]:checked').value,
-        numberOfPeople: document.getElementById("numberOfPeople").value || 1,
-        message: document.getElementById("message").value,
+        numberOfPeople: document.querySelector('input[name="attendance"]:checked').value === "yes" 
+          ? (document.getElementById("numberOfPeople").value || "1")
+          : "1",
+        message: document.getElementById("message").value.trim(),
+        rsvpId: util.generateID(),
+        timestamp: new Date().toISOString()
       };
       
       console.log("Submitting form data:", formData);
       
       // Submit to Google Apps Script
-      const response = await util.fetchAPI("POST_RSVP", "POST", formData);
+      const response = await util.fetchAPI(formData);
       
       console.log("API Response:", response);
       
-      if (response.success || response.status === "success") {
+      if (response.success !== false && (response.success || response.status === "success")) {
         this.showSuccessModal();
         this.form.reset();
         this.togglePeopleField();
         
-        // Update statistics
-        if (window.treeAnimation) {
-          window.treeAnimation.updateFromAPI();
-        }
-        
-        // Fetch updated stats
-        this.updateStatistics();
+        // Update statistics after successful submission
+        setTimeout(() => {
+          if (window.treeAnimation) {
+            window.treeAnimation.updateFromAPI();
+          }
+          this.updateStatistics();
+        }, 500);
       } else {
-        throw new Error(response.message || "Submission failed");
+        const errorMsg = response.message || "Submission failed. Please try again.";
+        throw new Error(errorMsg);
       }
     } catch (error) {
       console.error("Submission error:", error);
-      util.showToast("Error submitting RSVP. Please try again.", "error");
+      util.showToast(error.message || "Error submitting RSVP. Please try again.", "error");
     } finally {
       submitBtn.disabled = false;
       btnText.style.display = "inline";
@@ -155,37 +187,116 @@ class RSVPForm {
   
   async updateStatistics() {
     try {
-      const stats = await util.fetchAPI("GET_STATS");
+      const stats = await util.fetchAPI({ action: "GET_STATS" });
       
-      // Update stat cards
+      // Update stat cards on home page
       const peopleCard = document.getElementById("statPeopleConfirmed");
       const confirmCard = document.getElementById("statConfirmations");
       const churchCard = document.getElementById("statChurches");
       
-      if (peopleCard) {
+      if (peopleCard && stats.peopleConfirmed !== undefined) {
         const oldValue = parseInt(peopleCard.textContent);
         if (oldValue !== stats.peopleConfirmed) {
           new AnimatedCounter(peopleCard, stats.peopleConfirmed, 500).start();
         }
       }
       
-      if (confirmCard) {
+      if (confirmCard && stats.confirmations !== undefined) {
         const oldValue = parseInt(confirmCard.textContent);
         if (oldValue !== stats.confirmations) {
           new AnimatedCounter(confirmCard, stats.confirmations, 500).start();
         }
       }
       
-      if (churchCard) {
+      if (churchCard && stats.participatingChurches !== undefined) {
         const oldValue = parseInt(churchCard.textContent);
         if (oldValue !== stats.participatingChurches) {
           new AnimatedCounter(churchCard, stats.participatingChurches, 500).start();
         }
       }
     } catch (error) {
-      console.log("Could not update statistics");
+      console.log("Could not update statistics:", error);
     }
   }
+}
+
+// Animated Counter Class
+class AnimatedCounter {
+  constructor(element, target, duration = 1000) {
+    this.element = element;
+    this.target = target;
+    this.duration = duration;
+    this.start = parseInt(element.textContent) || 0;
+    this.increment = (this.target - this.start) / (duration / 16);
+    this.current = this.start;
+    this.animationId = null;
+  }
+  
+  start() {
+    const animate = () => {
+      this.current += this.increment;
+      
+      if ((this.increment > 0 && this.current >= this.target) ||
+          (this.increment < 0 && this.current <= this.target)) {
+        this.element.textContent = Math.floor(this.target);
+      } else {
+        this.element.textContent = Math.floor(this.current);
+        this.animationId = requestAnimationFrame(animate);
+      }
+    };
+    
+    animate();
+  }
+  
+  stop() {
+    if (this.animationId) {
+      cancelAnimationFrame(this.animationId);
+    }
+  }
+}
+
+// Confetti animation
+function createConfetti() {
+  const container = document.getElementById("confetti");
+  if (!container) return;
+  
+  const colors = ["#d4a652", "#55aa8a", "#1a2d4d", "#fac858"];
+  
+  for (let i = 0; i < 50; i++) {
+    const piece = document.createElement("div");
+    piece.className = "confetti-piece";
+    piece.style.left = Math.random() * 100 + "%";
+    piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animation = `fall ${2 + Math.random() * 1}s ease-in forwards`;
+    piece.style.animationDelay = Math.random() * 0.5 + "s";
+    container.appendChild(piece);
+    
+    setTimeout(() => piece.remove(), 3000);
+  }
+}
+
+// Add keyframe for confetti
+if (!document.getElementById("confetti-styles")) {
+  const style = document.createElement("style");
+  style.id = "confetti-styles";
+  style.textContent = `
+    @keyframes fall {
+      to {
+        transform: translateY(100vh) rotateZ(360deg);
+        opacity: 0;
+      }
+    }
+    
+    .confetti-piece {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      pointer-events: none;
+      border-radius: 2px;
+      z-index: 2001;
+    }
+  `;
+  document.head.appendChild(style);
 }
 
 // Initialize form when DOM is ready
@@ -207,6 +318,7 @@ style.textContent = `
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     z-index: 9999;
     animation: slideUp 0.3s ease-out;
+    max-width: 90vw;
   }
   
   .toast-success {
@@ -217,14 +329,6 @@ style.textContent = `
   .toast-error {
     border-left: 4px solid #dc2626;
     color: #7f1d1d;
-  }
-  
-  .confetti-piece {
-    position: fixed;
-    width: 10px;
-    height: 10px;
-    pointer-events: none;
-    bottom: 100vh;
   }
   
   @keyframes slideUp {
