@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Join us as we celebrate our 6th Church Anniversary - A premium digital invitation and attendance confirmation experience.">
+    <meta name="theme-color" content="#d4a652">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="6th Church Anniversary Celebration">
+    <meta property="og:description" content="You're invited to celebrate our 6th Church Anniversary. Confirm your attendance and be part of our special day.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://anniversary.church.com">
+    <meta property="og:image" content="/assets/og-image.jpg">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles/main.css">
+    
+    <title>6th Church Anniversary - You're Invited</title>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-content">
+                <div class="logo">
+                    <img src="/assets/logo/logo.png" alt="Church Logo" class="logo-img">
+                </div>
+                <div class="nav-links">
+                    <a href="#hero" class="nav-link">Home</a>
+                    <a href="#about" class="nav-link">About</a>
+                    <a href="#gallery" class="nav-link">Gallery</a>
+                    <a href="#confirmation" class="nav-link">RSVP</a>
+                    <a href="/admin" class="nav-link nav-link-admin">Admin</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div class="hero-background">
+            <canvas id="particleCanvas"></canvas>
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-logo fade-up" style="animation-delay: 0.1s">
+                    <img src="/assets/logo/logo.png" alt="Church Logo" class="hero-logo-img">
+                </div>
+                <h1 class="hero-title fade-up" style="animation-delay: 0.2s">
+                    You're Invited
+                </h1>
+                <p class="hero-subtitle fade-up" style="animation-delay: 0.3s">
+                    Join us as we celebrate our 6th Church Anniversary
+                </p>
+                <div class="hero-cta fade-up" style="animation-delay: 0.4s">
+                    <a href="#confirmation" class="btn btn-primary btn-lg">
+                        Confirm Attendance
+                    </a>
+                </div>
+                <div class="scroll-indicator fade-up" style="animation-delay: 0.5s">
+                    <span>Scroll to explore</span>
+                    <div class="scroll-arrow">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-header fade-up">
+                <h2 class="section-title">Celebrating Faith & Fellowship</h2>
+            </div>
+            
+            <!-- Theme Card -->
+            <div class="theme-card fade-up" style="animation-delay: 0.1s">
+                <div class="theme-quote">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" class="quote-icon">
+                        <path d="M3 21c3 0 7-1 7-8V5c0-1.25-4.4-5-7-5m14 0c-3 0-7 3.75-7 5v8c0 7 4 8 7 8z"></path>
+                    </svg>
+                    <p class="bible-verse" id="bibleVerse"></p>
+                </div>
+            </div>
+
+            <!-- Event Details Grid -->
+            <div class="event-details-grid">
+                <div class="detail-card fade-up" style="animation-delay: 0.2s">
+                    <div class="detail-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+                            <path d="M16 2v4M8 2v4M3 10h18"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="detail-label">Date</h3>
+                        <p class="detail-value" id="eventDate"></p>
+                    </div>
+                </div>
+
+                <div class="detail-card fade-up" style="animation-delay: 0.3s">
+                    <div class="detail-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="detail-label">Time</h3>
+                        <p class="detail-value" id="eventTime"></p>
+                    </div>
+                </div>
+
+                <div class="detail-card fade-up" style="animation-delay: 0.4s">
+                    <div class="detail-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="detail-label">Venue</h3>
+                        <p class="detail-value" id="eventVenue"></p>
+                    </div>
+                </div>
+
+                <div class="detail-card fade-up" style="animation-delay: 0.5s">
+                    <div class="detail-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="detail-label">Contact</h3>
+                        <p class="detail-value" id="eventContact"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Program Highlights Timeline -->
+            <div class="program-section fade-up">
+                <h3 class="program-title">Celebration Highlights</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-marker">
+                            <div class="timeline-dot"></div>
+                        </div>
+                        <div class="timeline-content">
+                            <h4 class="timeline-time">Morning</h4>
+                            <p class="timeline-description">Opening Prayer & Welcome Service</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker">
+                            <div class="timeline-dot"></div>
+                        </div>
+                        <div class="timeline-content">
+                            <h4 class="timeline-time">Afternoon</h4>
+                            <p class="timeline-description">Fellowship & Celebration Lunch</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker">
+                            <div class="timeline-dot"></div>
+                        </div>
+                        <div class="timeline-content">
+                            <h4 class="timeline-time">Evening</h4>
+                            <p class="timeline-description">Special Thanksgiving & Closing Remarks</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Living Tree of Faith Section -->
+    <section id="tree" class="tree-section">
+        <div class="container">
+            <div class="section-header fade-up">
+                <h2 class="section-title">🌳 Living Tree of Faith</h2>
+                <p class="section-subtitle">Every attendance confirmation helps our Tree of Faith grow as we celebrate God's faithfulness</p>
+            </div>
+            
+            <div class="tree-container fade-up">
+                <div class="tree-visualization">
+                    <svg id="treeSvg" class="tree-svg" viewBox="0 0 200 300" preserveAspectRatio="xMidYMid meet">
+                        <!-- Tree components will be generated by JavaScript -->
+                    </svg>
+                </div>
+                <div class="tree-legend">
+                    <div class="legend-stage">
+                        <span class="stage-indicator stage-0"></span>
+                        <span>Seedling</span>
+                    </div>
+                    <div class="legend-stage">
+                        <span class="stage-indicator stage-1"></span>
+                        <span>Young Tree</span>
+                    </div>
+                    <div class="legend-stage">
+                        <span class="stage-indicator stage-2"></span>
+                        <span>Growing Tree</span>
+                    </div>
+                    <div class="legend-stage">
+                        <span class="stage-indicator stage-3"></span>
+                        <span>Blooming Tree</span>
+                    </div>
+                    <div class="legend-stage">
+                        <span class="stage-indicator stage-4"></span>
+                        <span>Full Bloom</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Celebration Snapshot Section -->
+    <section id="snapshot" class="snapshot-section">
+        <div class="container">
+            <div class="section-header fade-up">
+                <h2 class="section-title">Celebration Snapshot</h2>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card fade-up" style="animation-delay: 0.1s">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-number" data-target="0" id="statPeopleConfirmed">0</div>
+                    <div class="stat-label">People Confirmed</div>
+                </div>
+
+                <div class="stat-card fade-up" style="animation-delay: 0.2s">
+                    <div class="stat-icon">📝</div>
+                    <div class="stat-number" data-target="0" id="statConfirmations">0</div>
+                    <div class="stat-label">Confirmations Received</div>
+                </div>
+
+                <div class="stat-card fade-up" style="animation-delay: 0.3s">
+                    <div class="stat-icon">⛪</div>
+                    <div class="stat-number" data-target="0" id="statChurches">0</div>
+                    <div class="stat-label">Participating Churches</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery-section">
+        <div class="container">
+            <div class="section-header fade-up">
+                <h2 class="section-title">Memories & Moments</h2>
+            </div>
+            
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Gallery items will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Attendance Confirmation Section -->
+    <section id="confirmation" class="confirmation-section">
+        <div class="container">
+            <div class="section-header fade-up">
+                <h2 class="section-title">Confirm Your Attendance</h2>
+                <p class="section-subtitle">Let us know you'll be joining us for this special celebration</p>
+            </div>
+            
+            <div class="form-container fade-up">
+                <form id="rsvpForm" class="rsvp-form">
+                    <div class="form-group">
+                        <label for="name" class="form-label">What should we call you? *</label>
+                        <input 
+                            type="text" 
+                            id="name" 
+                            name="name" 
+                            class="form-input" 
+                            placeholder="Your full name"
+                            required
+                        >
+                        <span class="error-message" id="nameError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="church" class="form-label">Church / Organization *</label>
+                        <input 
+                            type="text" 
+                            id="church" 
+                            name="church" 
+                            class="form-input" 
+                            placeholder="Your church or organization"
+                            required
+                        >
+                        <span class="error-message" id="churchError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="attendance" class="form-label">Will you be joining us? *</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="attendance" value="yes" required>
+                                <span class="radio-text">Yes, I'll be there</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="attendance" value="no" required>
+                                <span class="radio-text">Sorry, I can't make it</span>
+                            </label>
+                        </div>
+                        <span class="error-message" id="attendanceError"></span>
+                    </div>
+
+                    <div class="form-group" id="peopleGroup" style="display: none;">
+                        <label for="numberOfPeople" class="form-label">Number of People *</label>
+                        <input 
+                            type="number" 
+                            id="numberOfPeople" 
+                            name="numberOfPeople" 
+                            class="form-input" 
+                            placeholder="How many people will attend?"
+                            min="1"
+                            max="50"
+                        >
+                        <span class="error-message" id="peopleError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message" class="form-label">Message (Optional)</label>
+                        <textarea 
+                            id="message" 
+                            name="message" 
+                            class="form-textarea" 
+                            placeholder="Leave a short greeting, prayer or congratulatory message..."
+                            rows="4"
+                        ></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg btn-submit">
+                        <span class="btn-text">Confirm My Attendance</span>
+                        <span class="btn-loader" style="display: none;">
+                            <svg class="spinner" viewBox="0 0 50 50">
+                                <circle cx="25" cy="25" r="20" fill="none" stroke-width="3"></circle>
+                            </svg>
+                        </span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content modal-success">
+            <div class="modal-close" onclick="closeModal()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </div>
+            
+            <div class="success-animation">
+                <div class="checkmark-circle">
+                    <div class="checkmark"></div>
+                </div>
+            </div>
+            
+            <h2 class="modal-title">Thank You!</h2>
+            <p class="modal-message">
+                Your attendance has been recorded. We look forward to celebrating with you!
+            </p>
+            
+            <div class="confetti" id="confetti"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <img src="/assets/logo/logo.png" alt="Church Logo" class="footer-logo">
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <div class="footer-links">
+                        <a href="#about">About</a>
+                        <a href="#gallery">Gallery</a>
+                        <a href="#confirmation">RSVP</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#" class="social-link" title="Facebook">f</a>
+                        <a href="#" class="social-link" title="Instagram">📷</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Contact</h4>
+                    <p class="footer-contact" id="footerContact"></p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; <span id="yearCopy"></span> Church Anniversary. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/tree.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/form.js"></script>
+    <script src="js/stats.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
