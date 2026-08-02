@@ -1,4 +1,3 @@
-// Form Validation & Submission
 class RSVPForm {
   constructor() {
     this.form = document.getElementById("rsvpForm");

@@ -17,6 +17,9 @@ class ChurchAnniversaryApp {
     let lastScrollTop = 0;
     const scrollThreshold = 100; // Show navbar after scrolling down
     
+    // Initially hide the navbar on page load
+    navbar.classList.add('navbar-hidden');
+    
     window.addEventListener('scroll', () => {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
       const heroHeight = hero ? hero.offsetHeight : window.innerHeight;
