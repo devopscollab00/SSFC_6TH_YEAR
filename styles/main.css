@@ -468,6 +468,27 @@ body {
   }
 }
 
+@keyframes kenBurnsEffect {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    transform: scale(1.1) translate(-2%, -2%);
+  }
+  100% {
+    transform: scale(1) translate(0, 0);
+  }
+}
+
+@keyframes backgroundFade {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.95;
+  }
+}
+
 /* Hero Section - Enhanced with Professional Background */
 .hero {
   position: relative;
@@ -477,17 +498,20 @@ body {
   justify-content: center;
   overflow: hidden;
   margin-top: 0;
-  background: linear-gradient(135deg, rgba(250, 248, 246, 0.05) 0%, rgba(245, 241, 237, 0.05) 50%, rgba(237, 232, 225, 0.05) 100%);
-  background-size: 400% 400%;
-  animation: heroBgShift 15s ease infinite, heroGradientPulse 6s ease-in-out infinite;
-  
-  /* Support for custom hero background image */
-  background-image: 
-    linear-gradient(135deg, rgba(250, 248, 246, 0.05) 0%, rgba(245, 241, 237, 0.05) 50%, rgba(237, 232, 225, 0.05) 100%),
-    url('/assets/hero-bg/hero-bg.jpg');
-  background-size: 400% 400%, cover;
-  background-position: 0% 50%, center;
-  background-attachment: fixed;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -5%;
+  left: -5%;
+  right: -5%;
+  bottom: -5%;
+  background-image: url('/assets/hero-bg/hero-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  animation: kenBurnsEffect 30s ease-in-out infinite, backgroundFade 15s ease-in-out infinite;
+  z-index: 0;
 }
 
 @supports (background-blend-mode: overlay) {
@@ -513,11 +537,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: 
-    radial-gradient(circle at 20% 50%, rgba(212, 166, 82, 0.03) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(85, 170, 138, 0.02) 0%, transparent 50%),
-    radial-gradient(circle at 40% 20%, rgba(26, 45, 77, 0.02) 0%, transparent 50%);
-  animation: glowPulse 8s ease-in-out infinite;
+  background: transparent;
 }
 
 .hero-background::after {
@@ -527,8 +547,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.05) 50%, transparent 100%);
-  animation: shimmerWave 4s linear infinite;
+  background: transparent;
 }
 
 /* Floating Orbs */
@@ -613,9 +632,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: 
-    radial-gradient(ellipse at center top, rgba(212, 166, 82, 0.01) 0%, transparent 60%),
-    radial-gradient(ellipse at center, rgba(255, 255, 255, 0) 0%, transparent 100%);
+  background: transparent;
   z-index: 1;
 }
 
@@ -626,18 +643,12 @@ body {
   max-width: 700px;
   padding: 2rem;
   animation: fadeIn 0.8s ease-out;
-  backdrop-filter: blur(5px);
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: var(--radius-xl);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(212, 166, 82, 0.08);
 }
 
 .hero-logo {
   margin-bottom: 3rem;
   display: flex;
   justify-content: center;
-  animation: continuous-float 4s ease-in-out infinite;
   position: relative;
 }
 
